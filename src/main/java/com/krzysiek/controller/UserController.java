@@ -40,19 +40,39 @@ public class UserController {
         long i = Long.parseLong(request.getParameter("userid"));
         return userRepository.findById(i);
     }
-
-    @RequestMapping(value = "/login", method = RequestMethod.POST, headers = {"content-type=application/x-www-form-urlencoded"})
+    //logowanie bez aktualizacji statusu zostawic do testow pozniej usunav
+    @RequestMapping(value = "/logi", method = RequestMethod.POST, headers = {"content-type=application/x-www-form-urlencoded"})
     public Map<String, User> loginUser(WebRequest request) {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
         User user = userRepository.findUserByLoginAndPassword(login, password);
-        user.setPassword("");
+        Map<String, User> users = new TreeMap<>();
+        if(user!=null) {
+            user.setPassword("");
+            users.put("user", user);
+        }else {
+         HttpStatus status = HttpStatus.NOT_FOUND;
+         users.put("user",  null);
+        }
+        return users;
+    }
+    /*NOWE METODY*/
+    //to jest ciekawa metoda pozwala na obsługe błędów
+    @RequestMapping(value = "/login", method = RequestMethod.POST, headers = {"content-type=application/x-www-form-urlencoded"})
+    public ResponseEntity<Map<String, User>> loginUserResponse(WebRequest request) {
+        String login = request.getParameter("login");
+        String password = request.getParameter("password");
+        User user = userRepository.findUserByLoginAndPassword(login, password);
+
         HttpStatus status = user != null ?
                 HttpStatus.OK : HttpStatus.NOT_FOUND;
 
         Map<String, User> users = new TreeMap<>();
         users.put("user", user);
-        return users;
+
+
+
+        return new ResponseEntity<Map<String, User>>(users, status);
     }
     //ttuaj tez dodac jakis feedback o przebiegu opertacjo
     @RequestMapping(value = "/register", method = RequestMethod.POST, headers = {"content-type=application/x-www-form-urlencoded"})
@@ -66,20 +86,7 @@ public class UserController {
         //respondy do sie doda kiedys
     }
 
-    /*NOWE METODY*/
-    //to jest ciekawa metoda pozwala na obsługe błędów
-    @RequestMapping(value = "/logi", method = RequestMethod.POST, headers = {"content-type=application/x-www-form-urlencoded"})
-    public ResponseEntity<User> spittleById(WebRequest request) {
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-        User user = userRepository.findUserByLoginAndPassword(login, password);
 
-        HttpStatus status = user != null ?
-                HttpStatus.OK : HttpStatus.NOT_FOUND;
-
-
-        return new ResponseEntity<User>(user, status);
-    }
     /*@RequestMapping(value="/{id}", method=RequestMethod.GET)
     public @ResponseBody Spittle spittleById(@PathVariable long id) {
         return spittleRepository.findOne(id);
