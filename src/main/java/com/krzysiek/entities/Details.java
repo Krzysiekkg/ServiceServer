@@ -12,8 +12,20 @@ public class Details {
     @Column(name = "detaildescription")
     private String detailDescription;
     private int status;
-    @Column(name = "pylon_id")
-    private Long idPylon;
+   /* @Column(name = "pylon_id")
+    private Long idPylon;*/
+
+    @ManyToOne
+    @JoinColumn(name = "pylon_id")
+    private Pylon pylon;
+
+    public Pylon getPylon() {
+        return pylon;
+    }
+
+    public void setPylon(Pylon pylon) {
+        this.pylon = pylon;
+    }
 
     public Long getDetailId() {
         return detailId;
@@ -39,11 +51,4 @@ public class Details {
         this.status = status;
     }
 
-    public Long getIdPylon() {
-        return idPylon;
-    }
-
-    public void setIdPylon(Long idPylon) {
-        this.idPylon = idPylon;
-    }
 }

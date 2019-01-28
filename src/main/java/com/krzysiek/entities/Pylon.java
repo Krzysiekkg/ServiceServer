@@ -1,7 +1,11 @@
 package com.krzysiek.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "pylons")
@@ -15,8 +19,31 @@ public class Pylon implements Serializable {
     private String latitude;
     //istnienie tego jeszcze trzeba przemyśleć
     private String done;
-    @Column(name = "task_id")
-    private Long idTask;
+    @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "task_id")
+    private Tasks tasks;
+    @JsonBackReference
+    @OneToMany(mappedBy = "pylon", cascade = CascadeType.ALL)
+    private Set<Details> detailsSet;
+
+
+    public Tasks getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(Tasks tasks) {
+        this.tasks = tasks;
+    }
+
+    public Set<Details> getDetailsSet() {
+        return detailsSet;
+    }
+
+    public void setDetailsSet(Set<Details> detailsSet) {
+        this.detailsSet = detailsSet;
+    }
+
 
     public Long getPylonId() {
         return pylonId;
@@ -58,11 +85,4 @@ public class Pylon implements Serializable {
         this.done = done;
     }
 
-    public Long getIdTask() {
-        return idTask;
-    }
-
-    public void setIdTask(Long idTask) {
-        this.idTask = idTask;
-    }
 }

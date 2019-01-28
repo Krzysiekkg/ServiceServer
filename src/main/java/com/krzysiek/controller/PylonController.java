@@ -30,12 +30,12 @@ public class PylonController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST, headers = {"content-type=application/x-www-form-urlencoded"})
-    public Map<String, List<Pylon>> getPylonsMap(WebRequest request) {
+    public List<Pylon> getPylonsMap(WebRequest request) {
         Long taskid= Long.parseLong(request.getParameter("taskid"));
 
-        List<Pylon> pylons= pylonRepository.findPylonsByTaskId(taskid);
+        List<Pylon> pylons= pylonRepository.findByTasksTaskid(taskid);
         Map<String, List<Pylon>> pylonsMap = new TreeMap<>();
         pylonsMap.put("getpylons", pylons);
-        return pylonsMap;
+        return pylons;
     }
 }

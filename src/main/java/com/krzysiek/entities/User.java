@@ -3,6 +3,7 @@ package com.krzysiek.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -18,6 +19,9 @@ public class User implements Serializable {
 
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Tasks> tasks;
 
     public Long getUserid() {
         return userid;
@@ -42,24 +46,5 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
-
-    @Column(name = "last_name")
-    private String lastName;
-
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "created")
-    @CreationTimestamp
-    private Date created;
-
-    @Column(name = "updated")
-    @UpdateTimestamp
-    private Date updated;
-*/
-
-
-    //getters and setters
 
 }

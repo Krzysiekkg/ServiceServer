@@ -12,8 +12,8 @@ import java.util.List;
 @Repository
 public interface DetailRepository extends JpaRepository<Details, Long> {
 
-    @Query("SELECT d FROM Details d WHERE d.idPylon = ?1")
-    List<Details> findDetailsByPylonId(Long idPylon);
+
+    List<Details> findByPylonPylonId(Long pylonId);
     //ogarnąć co to ten case:)
     @Query("SELECT CASE WHEN COUNT(d) > 0 THEN 'true' ELSE 'false' END FROM Details d WHERE d.detailId = ?1")
     Boolean existsByDetailsId(Long id);

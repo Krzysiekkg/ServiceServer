@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface PylonRepository extends JpaRepository<Pylon,Long> {
 
-    @Query("SELECT p FROM Pylon p WHERE p.idTask = ?1")
-    List<Pylon> findPylonsByTaskId(Long taskid);
+  /*  @Query("SELECT p FROM Pylon p WHERE p.idTask = ?1")
+    List<Pylon> findPylonsByTaskId(Long taskid);*/
+
+    List<Pylon> findByTasksTaskid(Long taskid);
 }

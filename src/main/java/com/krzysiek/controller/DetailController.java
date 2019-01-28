@@ -23,13 +23,14 @@ public class DetailController {
 
 
     @RequestMapping(value = "/", method = RequestMethod.POST, headers = {"content-type=application/x-www-form-urlencoded"})
-    public Map<String, List<Details>> getPylonsMap(WebRequest request) {
+    public List<Details> getPylonsMap(WebRequest request) {
         Long pylonid = Long.parseLong(request.getParameter("pylonid"));
 
-        List<Details> details = detailRepository.findDetailsByPylonId(pylonid);
+        List<Details> details = detailRepository.findByPylonPylonId(pylonid);
+
         Map<String, List<Details>> detailsMap = new TreeMap<>();
         detailsMap.put("getdetails", details);
-        return detailsMap;
+        return details;
     }
 
     //dodac jakis feedback o przebiegu operacji
